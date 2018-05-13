@@ -18,4 +18,4 @@ Enter your game id, secrets and endpoints in ''PlayState.hx'', then build and ru
 
 The demo app:
 
-![Screenshot of demo app](https://github.com/Tw1ddle/samcodes-analytics-demo/blob/master/screenshots/analytics-demo.png?raw=true "Analytics Demo")
+![Screenshot of demo app](https://github.com/Tw1ddle/samcodes-gameanalytics-demo/blob/master/screenshots/analytics-demo.png?raw=true "Analytics Demo")
