@@ -25,7 +25,7 @@ install:
 # Build the demo
 script:
   - haxelib run openfl build "Project.xml" flash
-  - haxelib run openfl build "Project.xml" html5
+  - haxelib run openfl build "Project.xml" html5 -minify -release
   - haxelib run openfl build "Project.xml" linux
 
 # Deploy the generated demo using Travis builtin GitHub Pages support
