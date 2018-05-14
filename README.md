@@ -1,6 +1,7 @@
 # Haxe GameAnalytics Demo
 
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](https://github.com/Tw1ddle/samcodes-gameanalytics-demo/blob/master/LICENSE)
+[![Travis Build Status](https://img.shields.io/travis/Tw1ddle/samcodes-gameanalytics-demo.svg?style=flat-square)](https://travis-ci.org/Tw1ddle/samcodes-gameanalytics-demo)
 
 HaxeFlixel demo of the Haxe [samcodes-gameanalytics](https://github.com/Tw1ddle/samcodes-gameanalytics) analytics haxelib. Run it [in your browser](http://tw1ddle.github.io/samcodes-gameanalytics-demo/index.html).
 
