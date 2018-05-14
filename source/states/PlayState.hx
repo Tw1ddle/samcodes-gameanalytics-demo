@@ -153,7 +153,7 @@ class PlayState extends FlxState {
 			secretKey : Sandbox.sandboxSecretKey,
 			host : Sandbox.sandboxHost,
 			compression: GameAnalyticsCompressionOption.NONE,
-			protocol: GameAnalyticsProtocolOption.HTTP,
+			protocol: GameAnalyticsProtocolOption.HTTPS,
 			maxCachedEventCount: 1000
 		};
 		
