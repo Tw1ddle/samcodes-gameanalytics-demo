@@ -1,0 +1,38 @@
+sudo: required
+dist: trusty
+
+language: haxe
+
+# Add encrypted API key
+env:
+  global:
+    - secure: LIKzTsdQ+IBZnx2nIWxTFWYL+SyR6yihY5g5Nkxqq6smavi7nWLWY8y8W1GFzU0JD7r4yNbnStLlBOJ/EXnYCrDpK3uZ6SZg2UdEfQyJVKulIKUYaZ5xpDwmaX9ui0hp7/PrGuNU9YE5xS5+bMRHyt9pCpEQjWFuclD3GwU8HQ0TSvAnCe67hUbr5eNpTn9q/MEW5Uuy4Kx46bUoSHg3/aoSGP1+Ss+BVVT8KW3wWMlXyVh1VHWXuIbS5oVDdnaT5eo7Em1bcmiG5w+2jI3K31Kpl6DcStpZqKtVhl9RgamzcCKiWVJlEYJMpgTZh7/1gAycLaYodsyn0NtOFH3i9bO1kZJ8d8QBHi0ZoDTupJI0SLqrlAB2rfsG6rJUsd+XQAidPe9txqOjgsPJyf3HIMnJAAZ8L9UvIaepvW2yairw5wIU40AFPyyJo+H7uAK1FwY3bnTgqlB/rAaje6BZ3fR0NykYoTkzgAkWRMQC/yb5mm9RIwKPYh7x8CH0uNmzRGRvbd0lhbOIW3O9lps8SOcv3TNxyFsZvoy21Na4+YAK8MU+tfEdYjd5Zh8cKgv3jZjSPZrkSI4UmcuIwriWrsZGxx+rC0MumkjaCTtqL/Fq/E3p9jmFHCUuOCeTKj4g/5IwJ8sf9VFdAkMka7sSkch0ApUR1/LQL0lLt9a5D+A=
+os:
+  - linux
+
+# Blacklist
+branches:
+  only:
+    - master
+
+# Install dependencies
+install:
+  - haxelib install hxcpp
+  - haxelib install lime
+  - haxelib install openfl
+  - haxelib install flixel
+
+# Build the demo
+script:
+  - haxelib run openfl build "Project.xml" flash
+  - haxelib run openfl build "Project.xml" html5
+  - haxelib run openfl build "Project.xml" linux
+
+# Deploy the generated demo using Travis builtin GitHub Pages support
+deploy:
+  provider: pages
+  skip_cleanup: true
+  local_dir: bin
+  github_token: $GITHUB_API_KEY
+  on:
+    branch: master

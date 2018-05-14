@@ -12,7 +12,7 @@ This demo requires the analytics haxelib, so install it first:
 haxelib install samcodes-gameanalytics
 ```
 
-Enter your game id, secrets and endpoints in ''PlayState.hx'', then build and run the app. Press the buttons to generate and post up game analytics events, and then wait for them to appear on your GameAnalytics dashboard.
+Enter the sandbox/test game id, secrets etc in ''PlayState.hx'', then build and run the app. Press the buttons to enqueue and send game analytics events.
 
 ## Screenshots
 

@@ -1,5 +1,6 @@
 package states;
 
+import analytics.MyGameAnalyticsListener;
 import extension.gameanalytics.GameAnalytics;
 import extension.gameanalytics.GameAnalyticsCompressionOption;
 import extension.gameanalytics.GameAnalyticsListener;
@@ -13,8 +14,12 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import openfl.Lib;
 import openfl.events.Event;
-import source.analytics.MyGameAnalyticsListener;
+import extension.gameanalytics.detail.events.DefaultAnnotations;
+import extension.gameanalytics.detail.events.ErrorEventType;
 
+@:access(extension.gameanalytics.GameAnalytics)
+@:access(extension.gameanalytics.detail.impl.GameAnalyticsImpl)
+@:access(extension.gameanalytics.detail.storage.SharedObjectStorage)
 class PlayState extends FlxState {
 	private var eventText:FlxText; // Event log text in top left of screen
 	
@@ -40,8 +45,8 @@ class PlayState extends FlxState {
 			addText("App received DEACTIVATE event");
 		});
 		
-		var baseX:Int = Std.int(FlxG.width / 4);
-		var baseY:Int = Std.int(FlxG.height / 4);
+		var baseX:Int = Std.int(FlxG.width / 3);
+		var baseY:Int = 20;
 		var makeEventButton = function(text:String, onPress:Void->Void) {
 			var recordEventButton = new BigButton(text, onPress);
 			recordEventButton.x = baseX + 50;
@@ -50,83 +55,109 @@ class PlayState extends FlxState {
 			add(recordEventButton);
 		}
 		
-		makeEventButton("Record Business Event", function() {
-			addText("Recording Business Event");
+		makeEventButton("Record Start Session Event", function() {
+			addText("Recording Start Session Event");
+			analytics.recordStartSessionEvent();
 		});
 		
-		makeEventButton("Record Complete Event", function() {
-			addText("Recording Complete Event");
+		makeEventButton("Record End Session Event", function() {
+			addText("Recording End Session Event");
+			analytics.recordEndSessionEvent();
+		});
+		
+		makeEventButton("Record Business Event", function() {
+			addText("Recording Business Event");
+			analytics.recordBusinessEvent("hat:epic", 1, "USD", 0, "menu_demo", null);
 		});
 		
 		makeEventButton("Record Design (Custom) Event", function() {
 			addText("Recording Design (Custom) Event");
+			analytics.recordDesignEvent("design1:design2:design3", 9001);
 		});
 		
 		makeEventButton("Record Error Event", function() {
 			addText("Recording Error Event");
+			analytics.recordErrorEvent(ErrorEventType.INFO, "test error");
 		});
 		
 		makeEventButton("Record Progression Event", function() {
 			addText("Recording Progression Event");
+			analytics.recordProgressionEvent("Start:TestButtonPress", 1, 1);
 		});
 		
 		makeEventButton("Record Resource Event", function() {
 			addText("Recording Resource Event");
+			analytics.recordResourceEvent("Source:life:rewardedVideo:gainLife", 100);
 		});
 		
-		var startSessionButton = new BigButton("Start Session", function() {
-			addText("Will attempt to start analytics session");
-			
-			analytics.startSession();
+		var initButton = new BigButton("Initialize and connect", function() {
+			addText("Will attempt to connect to GameAnalytics and initialize");
+			analytics.init();
 		});
-		startSessionButton.x = baseX + 250;
-		startSessionButton.y = Std.int(FlxG.height / 2) - 50;
-		add(startSessionButton);
-		
-		var endSessionButton = new BigButton("End Session", function() {
-			addText("Will attempt to end analytics session");
-			
-			analytics.endSession();
-		});
-		endSessionButton.x = baseX + 250;
-		endSessionButton.y = Std.int(FlxG.height / 2);
-		add(endSessionButton);
+		initButton.x = baseX + 250;
+		initButton.y = Std.int(FlxG.height / 2) - 50;
+		add(initButton);
 		
 		var postEventsButton = new BigButton("Post All Events", function() {
 			addText("Will attempt to post all analytics events");
-			
 			analytics.postEvents();
 		});
 		postEventsButton.x = baseX + 250;
-		postEventsButton.y = Std.int(FlxG.height / 2) + 100;
+		postEventsButton.y = Std.int(FlxG.height / 2) + 50;
 		add(postEventsButton);
 		
-		var printStoredEventsInfo = new BigButton("Print Stored Events Info", function() {
-			addText("Will print stored events info");
+		var flushEventsButton = new BigButton("Flush Events To Disk", function() {
+			addText("Will attempt to flush events to disk");
+			analytics.impl.storage.commitData();
+		});
+		flushEventsButton.x = baseX + 250;
+		flushEventsButton.y = Std.int(FlxG.height / 2) + 100;
+		add(flushEventsButton);
+		
+		var printStoredEventsInfo = new BigButton("Output Stored Events Info", function() {
+			addText("Will output stored events info");
 			
-			// TODO
+			var events = analytics.impl.storage.getEvents();
+			if (events != null) {
+				addText("Got " + events.length + " events");
+				for (event in events) {
+					addText(event);
+					trace(event);
+				}
+			} else {
+				addText("Events data is null...");
+			}
 		});
 		printStoredEventsInfo.x = baseX + 250;
 		printStoredEventsInfo.y = Std.int(FlxG.height / 2) + 150;
 		add(printStoredEventsInfo);
+		
+		var purgeStoredEventsInfo = new BigButton("Purge Stored Events Info", function() {
+			addText("Will purge stored events info");
+			analytics.impl.storage.purgeEvents();
+		});
+		purgeStoredEventsInfo.x = baseX + 250;
+		purgeStoredEventsInfo.y = Std.int(FlxG.height / 2) + 200;
+		add(purgeStoredEventsInfo);
 		
 		var clearLogButton = new BigButton("Clear Log", clearLog);
 		clearLogButton.x = 100;
 		clearLogButton.y = FlxG.height - clearLogButton.height - 20;
 		add(clearLogButton);
 		
-		analyticsListener = new MyGameAnalyticsListener();
+		// Actually create/setup the GameAnalytics instance
+		analyticsListener = new MyGameAnalyticsListener(this);
 		
 		var analyticsSettings:GameAnalyticsSettings = {
 			gameKey : Sandbox.sandboxGameKey,
 			secretKey : Sandbox.sandboxSecretKey,
-			endpoint : Sandbox.sandboxEndpoint,
+			host : Sandbox.sandboxHost,
 			compression: GameAnalyticsCompressionOption.NONE,
-			protocol: GameAnalyticsProtocolOption.HTTPS
+			protocol: GameAnalyticsProtocolOption.HTTP,
+			maxCachedEventCount: 1000
 		};
 		
-		addText("Creating GameAnalytics instance with key: " + analyticsSettings.gameKey + "\nAnd secret key: " + analyticsSettings.secretKey + "\nFor endpoint: " + analyticsSettings.endpoint);
-		
+		addText("Creating GameAnalytics instance with key: " + analyticsSettings.gameKey + "\nAnd secret key: " + analyticsSettings.secretKey + "\nFor host: " + analyticsSettings.host);
 		analytics = new GameAnalytics(analyticsSettings, analyticsListener);
 	}
 	
@@ -140,14 +171,14 @@ class PlayState extends FlxState {
 	/**
 	 * Add a message to the text event log
 	 */
-	private function addText(text:String):Void {
+	public function addText(text:String):Void {
 		eventText.text = text + "\n" + eventText.text;
 	}
 	
 	/**
 	 * Clear the event log
 	 */
-	private function clearLog():Void {
+	public function clearLog():Void {
 		eventText.text = "Cleared text log... Waiting...";
 	}
 }
