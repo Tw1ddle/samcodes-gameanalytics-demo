@@ -7,6 +7,7 @@ import extension.gameanalytics.GameAnalyticsListener;
 import extension.gameanalytics.GameAnalyticsProtocolOption;
 import extension.gameanalytics.GameAnalyticsSettings;
 import extension.gameanalytics.detail.endpoints.Sandbox;
+import extension.gameanalytics.detail.events.ErrorEventType;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.text.FlxText;
@@ -14,8 +15,6 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import openfl.Lib;
 import openfl.events.Event;
-import extension.gameanalytics.detail.events.DefaultAnnotations;
-import extension.gameanalytics.detail.events.ErrorEventType;
 
 @:access(extension.gameanalytics.GameAnalytics)
 @:access(extension.gameanalytics.detail.impl.GameAnalyticsImpl)
