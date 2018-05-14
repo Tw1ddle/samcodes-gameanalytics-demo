@@ -32,7 +32,7 @@ script:
 deploy:
   provider: pages
   skip_cleanup: true
-  local_dir: bin
+  local_dir: export/html5/bin
   github_token: $GITHUB_API_KEY
   on:
     branch: master

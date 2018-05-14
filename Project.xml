@@ -32,6 +32,8 @@
 	<!-- <haxelib name="samcodes-gameanalytics" /> -->
 	<include path="lib/samcodes-gameanalytics/include.xml" />
 	
+	<haxeflag name="-dce" value="std" />
+	
 	<!---------------------------------HAXEDEFINES---------------------------------->
 	
 	<!--Enable this for nape release builds for a serious performance improvement-->
