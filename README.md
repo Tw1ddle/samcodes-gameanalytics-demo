@@ -1,9 +1,8 @@
 # Haxe GameAnalytics Demo
 
-[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](https://github.com/Tw1ddle/samcodes-gameanalytics-demo/blob/master/LICENSE)
-[![Travis Build Status](https://img.shields.io/travis/Tw1ddle/samcodes-gameanalytics-demo.svg?style=flat-square)](https://travis-ci.org/Tw1ddle/samcodes-gameanalytics-demo)
+[![License](https://img.shields.io/:license-mit-blue.svg?style=flat-square)](https://github.com/Tw1ddle/samcodes-gameanalytics-demo/blob/master/LICENSE)
 
-HaxeFlixel demo of the Haxe [samcodes-gameanalytics](https://github.com/Tw1ddle/samcodes-gameanalytics) analytics haxelib. Run it [in your browser](http://tw1ddle.github.io/samcodes-gameanalytics-demo/index.html).
+HaxeFlixel demo of the Haxe [samcodes-gameanalytics](https://github.com/Tw1ddle/samcodes-gameanalytics) analytics haxelib. Run it [in your browser](https://tw1ddle.github.io/samcodes-gameanalytics-demo/index.html).
 
 Has various issues that break demo functionality at the moment (can't get POST over HTTPS to work for some reason among other things).
 
